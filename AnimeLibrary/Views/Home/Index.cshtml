@@ -1,0 +1,309 @@
+﻿@model AnimeLibrary.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Main Page";
+}
+
+<form asp-controller="Anime" asp-action="Search" method="get">
+    <input type="text" name="title" placeholder="Search..." />
+    <input type="submit" value="Search" />
+</form>
+
+
+<div class="dropdown-content">
+    @foreach (var genre in Model.Genres)
+    {
+        <a asp-controller="Anime" asp-action="Genre" asp-route-genre="@genre">@genre</a>
+    }
+</div>
+
+<!--<button class="dropdown-btn">Year</button>
+<div class="dropdown-content">
+    @foreach (var year in Model.Years)
+    {
+        <a asp-controller="Anime" asp-action="Year" asp-route-year="@year">@year</a>
+    }
+</div> -->
+
+
+<h2 class="category">Current Season</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.CurrentSeason)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+            <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+            <h3 class="anime-title">@anime.RomajiTitle</h3> 
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Action</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Action)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Romance</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Romance)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Comedy</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Comedy)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Music</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Music)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Drama</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Drama)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Sports</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Sports)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Psychological</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Psychological)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Fantasy</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Fantasy)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Horror</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Horror)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Ecchi</h2>
+<div class="anime-list">
+    @foreach (var anime in Model.Ecchi)
+    {
+        <div class="anime-item">
+            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+                <h3 class="anime-title">@anime.RomajiTitle</h3>
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .dropdown-content {
+        position: fixed; /* Фиксированная позиция */
+        top: 150px; /* Располагаем список сразу после шапки страницы */
+        left: 0; /* Прикрепляем список к левому краю страницы */
+        display: block; /* Отображаем по умолчанию */
+        background-color: black; /* Цвет фона */
+        min-width: 160px; /* Минимальная ширина */
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Тень */
+        z-index: 1; /* На переднем плане */
+        max-height: 575px; /* Максимальная высота списка для возможности прокрутки */
+        overflow-y: auto; /* Включаем вертикальную прокрутку */
+    }
+
+    
+
+    .dropdown-content::-webkit-scrollbar {
+        width: 5px; /* Ширина полосы прокрутки */
+    }
+
+    .dropdown-content::-webkit-scrollbar-thumb {
+        background-color: #888; /* Цвет ползунка */
+        border-radius: 10px; /* Скругление углов ползунка */
+    }
+
+        .dropdown-content a {
+            display: block; /* Сделать ссылки блочными элементами */
+            padding: 12px 16px; /* Отступы вокруг текста ссылок */
+            color: white; /* Цвет текста ссылок */
+            text-decoration: none; /* Убираем подчеркивание текста ссылок */
+        }
+
+            .dropdown-content a:hover {
+                background-color: #555; /* Цвет фона ссылок при наведении */
+            }
+
+
+    .dropdown-btn:hover .dropdown-content {
+        display: block;
+
+        /* Стили для отображения выпадающего меню при наведении */
+    }
+    .anime-list {
+        display: flex;
+        overflow-x: auto; /* Скрыли полосу прокрутки*/
+        padding: 10px;
+        
+    }
+    /* Стилизация полосы прокрутки для Webkit-браузеров */
+    .anime-list::-webkit-scrollbar {
+        height: 10px; /* Высота полосы прокрутки */
+    }
+
+    .anime-list::-webkit-scrollbar-track {
+        background: transparent; /* Цвет дорожки полосы прокрутки */
+        border-radius: 20px; /* Скругление углов дорожки для более гладких углов */
+    }
+
+    .anime-list::-webkit-scrollbar-thumb {
+        background: #ffa500; /* Оранжевый цвет ползунка полосы прокрутки */
+        border-radius: 20px; /* Скругление углов ползунка для более гладких углов */
+    }
+
+    .anime-list::-webkit-scrollbar-thumb:hover {
+        background: #ff8c00; /* Темно-оранжевый цвет ползунка при наведении */
+    }
+
+    /* Стилизация полосы прокрутки для Firefox */
+    .anime-list {
+        scrollbar-width: thin; /* Толщина полосы прокрутки */
+        scrollbar-color: #ffa500 transparent; /* Оранжевый цвет ползунка и светлый цвет дорожки */
+    }
+
+    /* Стилизация полосы прокрутки для IE и Edge */
+    .anime-list {
+        -ms-overflow-style: -ms-autohiding-scrollbar; /* Автоматическое скрытие полосы прокрутки */
+    }
+
+
+    .category  {
+        ont-family: 'B612', sans-serif;
+        font-style: italic;
+        font-weight: 700;
+    }
+
+    .anime-item {
+        flex: 0 0 auto;
+        margin: 0 10px;
+        text-align: center;
+        max-width: 150px;
+        word-wrap:break-word;
+    }
+
+    .anime-item img {
+        width: 150px;
+        height: 225px;
+        object-fit: cover;
+    }
+    
+    .anime-title {
+        font-family: 'B612', sans-serif;
+        font-style: italic;
+        font-weight: 700;
+        font-size: 15px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: normal;
+        max-height: 60px;
+        line-height: 20px
+    }
+
+    .anime-details ul li {
+        display: inline-block;
+        margin-right: 10px;
+        background-color: #e0e0e0;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 14px;
+        color: #333;
+    }
+    /* Убираем подчеркивание у всех ссылок */
+    a {
+        text-decoration: none; /* Убирает подчеркивание текста */
+    }
+
+    /* Изменяем цвет ссылок */
+    a {
+        color: white; /* Цвет ссылок теперь черный */
+    }
+
+    /* Добавляем эффект при наведении для ссылок */
+    a:hover {
+            color: #ffa500; /* Цвет ссылок при наведении курсора */
+    }
+
+</style>
+
+

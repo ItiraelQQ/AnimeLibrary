@@ -1,0 +1,86 @@
+﻿@model AnimeLibrary.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Anime by Year";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="content-wrapper">
+    <div class="genre-list">
+        @if (Model.Years != null && Model.Years.Any())
+            {@foreach (var year in Model.Years)
+            {
+                <div class="genre-item">
+                    <a asp-action="Year" asp-route-year="@year">
+                        @year
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="anime-list">
+        @foreach (var anime in Model.AllAnimes)
+        {
+            <div class="anime-item">
+                <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                    <h3>@anime.EnglishTitle</h3>
+                    <img src="@anime.CoverImage" alt="@anime.EnglishTitle">
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+        a:hover {
+            color: #ffa500;
+        }
+
+    .content-wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .genre-list {
+        flex: 1;
+        margin-right: 40px; /* Отступ между списком годов и списком аниме */
+        background-color: #ffa500; /* Светлый фон для списка годов */
+        padding: 20px;
+        border-radius: 10px; /* Скругленные углы */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для списка годов */
+    }
+
+    .genre-item {
+        background-color: black; /* Фон для каждого года */
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 10px; /* Скругленные углы для годов */
+        text-align: center;
+    }
+
+    .anime-list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        flex: 3; /* Занимает оставшееся пространство */
+    }
+
+    .anime-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+        .anime-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover; /* Обрезка изображения для поддержания пропорций без искажений */
+        }
+</style>

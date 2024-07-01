@@ -1,0 +1,204 @@
+﻿@model AnimeLibrary.Models.AnimeViewModel
+
+@{
+    ViewData["Title"] = Model.RomajiTitle;
+}
+
+<div class="anime-details">
+    <div class="anime-content">
+        <img src="@Model.CoverImage" alt="Обложка @Model.EnglishTitle" />
+        <div class="text-content">
+            <h1>@Model.RomajiTitle</h1>
+            <div id="description" class="description">
+                <p>@Html.Raw(Model.Description)</p>
+            </div>
+            <button id="toggleButton">Read more</button>
+        </div>
+    </div>
+
+    @if (Model.Genres != null && Model.Genres.Any())
+    {
+        <div class="genres-section">
+            <h3>Genres</h3>
+            <ul class="genres-list">
+                @foreach (var genre in Model.Genres)
+                {
+                    <li class="genre-item">@genre</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="statistics-section">
+        <h3>Statistics</h3>
+        <p>Rate: @(Model.Score.HasValue ? Model.Score.Value.ToString("0.0") : "Rating is unknown.")</p>
+        <p>Episodes: @(Model.Episodes.HasValue ? Model.Episodes.Value.ToString() : "1000+")</p>
+        <p>Release: @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("dd.MM.yyyy") : "Release date is unknown.")</p>
+    </div>
+
+    @if (Model.RelatedAnime != null && Model.RelatedAnime.Any())
+    {
+        <div class="related-anime-section">
+            <h3>Related</h3>
+            <div class="related-anime-list">
+                @foreach (var related in Model.RelatedAnime)
+                {
+                    <div class="related-anime-item">
+                        <a class="related-link" href="@Url.Action("Details", "Anime", new { id = related.Id })">
+                            <img src="@related.CoverImage" alt="Image @related.Title" />
+                            <p>@related.Title</p>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#toggleButton').click(function () {
+            var $description = $('#description');
+            var isExpanded = $description.hasClass('expanded');
+
+            if (!isExpanded) {
+                $description.css('height', $description.prop('scrollHeight') + 'px');
+            }
+
+            $description.toggleClass('expanded');
+
+            if (isExpanded) {
+                $description.css('height', '100px');
+            }
+
+            $(this).text(isExpanded ? 'Read more' : 'Hide');
+        });
+    });
+</script>
+
+<style>
+    .anime-details {
+        display: flex;
+        flex-direction: column;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: black;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+
+    .anime-content {
+        display: flex;
+        align-items: flex-start;
+    }
+
+        .anime-content img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+    .text-content {
+        flex-grow: 1;
+    }
+
+        .text-content h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: white;
+            text-align: left;
+        }
+
+    .description {
+        height: 100px; /* Начальная высота описания */
+        overflow: hidden;
+        transition: height 1s ease;
+        pointer-events: none;
+    }
+
+        .description.expanded {
+            height: auto;
+            -webkit-line-clamp: none;
+            pointer-events: all;
+        }
+
+    #toggleButton {
+        z-index: 10;
+        display: block;
+        background-color: #ffa500;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .text-content p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: white;
+        text-align: justify;
+    }
+
+    .genres-section, .statistics-section {
+        margin-top: 20px;
+    }
+
+    .genres-list {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+
+    .genre-item {
+        display: inline-block;
+        margin: 5px;
+        background-color: #ffa500;
+        color: black;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+
+    .statistics-section p {
+        font-size: 16px;
+        color: white;
+        margin: 5px 0;
+    }
+
+    .relations-section {
+        margin-top: 20px;
+    }
+
+    .related-link {
+        text-decoration: none;
+    }
+    .related-anime-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .related-anime-item {
+        width: 200px;
+        margin: 10px;
+    }
+
+        .related-anime-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .related-anime-item p {
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+            color: white;
+        }
+</style>
