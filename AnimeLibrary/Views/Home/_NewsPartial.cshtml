@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AnimeLibrary.Models.News>
+
+@if (Model != null && Model.Any())
+{
+    <div class="news-list">
+        @foreach (var item in Model)
+        {
+            <div class="news-item">
+                <h4>@item.Title</h4>
+                <img src="@item.ImageUrl" alt="News Image" />
+                <p>@item.Content</p>
+                <p><small>@item.CreatedAt.ToString("dd MMM yyyy")</small></p>
+            </div>
+        }
+    </div>
+}
+
+

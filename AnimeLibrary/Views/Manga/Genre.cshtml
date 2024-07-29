@@ -1,24 +1,24 @@
-﻿@model AnimeLibrary.Models.AnimeGenreViewModel
+﻿@model AnimeLibrary.Models.MangaGenreViewModel
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 
 @{
-    ViewData["Title"] = Model.Genre + " Anime";
+    ViewData["Title"] = Model.Genre + " Manga";
 }
 
-<h2>@Model.Genre Anime</h2>
+<h2>@Model.Genre Manga</h2>
 
 
 <div id="animeContainer" class="anime-list">
-    @foreach (var anime in Model.Animes)
+    @foreach (var manga in Model.Mangas)
     {
         <div class="anime-item">
-            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
-                <div class="anime-title">@anime.RomajiTitle</div>
-                <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
+            <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id">
+                <div class="anime-title">@manga.TitleRomaji</div>
+                <img src="@manga.CoverImage" alt="@manga.TitleRomaji" />
                 <div class="anime-description">
-                    @Html.Raw(anime.Description) <!-- Используйте Html.Raw, если описание содержит HTML -->
+                    @Html.Raw(manga.Description) <!-- Используйте Html.Raw, если описание содержит HTML -->
                 </div>
             </a>
         </div>
@@ -28,7 +28,7 @@
 <div class="dropdown-content">
     @foreach (var genre in Model.Genres)
     {
-        <a asp-controller="Anime" asp-action="Genre" asp-route-genre="@genre">@genre</a>
+        <a asp-controller="Manga" asp-action="Genre" asp-route-genre="@genre">@genre</a>
     }
 </div>
 
@@ -37,10 +37,10 @@
     const perPage = 15;
     let genre = '@Model.Genre';
 
-    async function loadMoreAnime() {
+    async function loadMoreManga() {
         page++;
         NProgress.start();
-        const response = await fetch(`/Anime/LoadMoreAnime?genre=${genre}&page=${page}&perPage=${perPage}`);
+        const response = await fetch(`/Manga/LoadMoreManga?genre=${genre}&page=${page}&perPage=${perPage}`);
         if (response.ok) {
             const html = await response.text();
             document.getElementById('animeContainer').insertAdjacentHTML('beforeend', html);
@@ -52,7 +52,7 @@
 
     window.onscroll = function () {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            loadMoreAnime();
+            loadMoreManga();
         }
     };
 </script>

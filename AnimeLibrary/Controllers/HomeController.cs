@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AnimeLibrary.Models;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 public class HomeController : Controller
 {
     private readonly AniListService _aniListService;
+    private readonly ApplicationDbContext _context;
 
-    public HomeController(AniListService aniListService)
+    public HomeController(AniListService aniListService, ApplicationDbContext context)
     {
         _aniListService = aniListService;
+        _context = context;
     }
-
+    [ResponseCache(Duration = 60)]
     public async Task<IActionResult> Index()
     {
         var currentlyAiringAnime = await _aniListService.GetCurrentlyAiringAnime();
@@ -26,7 +29,7 @@ public class HomeController : Controller
         var fantasyAnime = await _aniListService.GetAnimeByGenre("Fantasy");
         var horrorAnime = await _aniListService.GetAnimeByGenre("Horror");
         var ecchiAnime = await _aniListService.GetAnimeByGenre("Ecchi");
-
+        var news = _context.News.OrderByDescending(n => n.CreatedAt).Take(5).ToList();
         var genres = await _aniListService.GetGenresAsync();
         var years = await _aniListService.GetYearsAsync();
 
@@ -68,5 +71,10 @@ public class HomeController : Controller
         }
 
         return result;
+    }
+    public async Task<IActionResult> RedirectToCorrectDetailPage(int id)
+    {
+        var url = await _aniListService.GetCorrectDetailPageUrl(id);
+        return Redirect(url);
     }
 }

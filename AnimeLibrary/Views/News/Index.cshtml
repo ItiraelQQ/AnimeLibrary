@@ -1,0 +1,106 @@
+﻿@model IEnumerable<News>
+
+<h2>Новости</h2>
+@if (User.Identity.Name == "Itirael")
+{
+    <a asp-action="Create" class="btn btn-primary">Добавить новость</a>
+}
+
+@foreach (var item in Model)
+{
+    <div class="news-item">
+        <img src="@item.ImageUrl" alt="News Image" class="news-image" />
+        <div class="news-content">
+            <a href="@Url.Action("Details", "News", new { id = item.Id })">
+                <h3>@item.Title</h3>
+                <p class="news-content-text">@item.Content</p>
+                <p class="news-date"><small>@item.CreatedAt.ToString("dd MMM yyyy")</small></p>
+            </a>
+        </div>
+        @if (User.Identity.Name == "Itirael")
+        {
+            <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить эту новость?');">
+                <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+        }
+    </div>
+}
+
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    h2 {
+        font-size: 24px;
+        color: #e0e0e0;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        display: inline-block;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004494;
+        }
+
+    .news-item {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        border: 1px solid #444;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: flex-start;
+        transition: box-shadow 0.3s;
+    }
+
+        .news-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+
+            .news-item:hover h3 {
+                color: #ffa500; /* Цвет заголовка при наведении */
+            }
+        .news-item img {
+            width: 150px; /* Уменьшите ширину изображения */
+            height: auto;
+            border-radius: 4px;
+            margin-right: 20px; /* Расстояние между изображением и текстом */
+        }
+
+    .news-content {
+        flex-grow: 1;
+    }
+
+        .news-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #f5f5f5;
+        }
+
+    .news-content-text {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .news-date {
+        font-size: 14px;
+        color: #b0b0b0;
+    }
+</style>

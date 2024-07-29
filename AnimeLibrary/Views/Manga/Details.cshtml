@@ -1,25 +1,23 @@
-﻿@model AnimeLibrary.Models.AnimeViewModel
+﻿@model AnimeLibrary.Models.MangaViewModel
 
 @{
-    ViewData["Title"] = Model.RomajiTitle;
-    var trailerEmbedUrl = !string.IsNullOrEmpty(Model.Trailer) ? $"https://www.youtube.com/embed/{Model.Trailer}" : null;
-    var watchEmbedUrl = $"https://www.miruro.tv/watch?id={Model.Id}&ep=1";
+    ViewData["Title"] = Model.TitleRomaji;
 }
 
-<div class="anime-details">
-    <div class="anime-header">
-        <img src="@Model.CoverImage" alt="@Model.EnglishTitle" class="anime-image" />
-        <div class="anime-info">
-            <h1>@Model.RomajiTitle</h1>
-            <h5>@Model.EnglishTitle</h5>
-            <h5>@Model.NativeTitle</h5>
+<div class="manga-details">
+    <div class="manga-header">
+        <img src="@Model.CoverImage" alt="@Model.TitleEnglish" class="manga-image" />
+        <div class="manga-info">
+            <h1>@Model.TitleRomaji</h1>
+            <h5>@Model.TitleEnglish</h5>
+            <h5>@Model.TitleNative</h5>
             <div id="description" class="description">
                 <p>@Html.Raw(Model.Description)</p>
             </div>
-            <button id="toggleButton">Подробнее...</button>
+            <button id="toggleButton">Подробнее</button>
         </div>
     </div>
-    
+
     @if (Model.Genres != null && Model.Genres.Any())
     {
         <div class="genres-section">
@@ -39,71 +37,38 @@
     <div class="statistics-section">
         <h3>Статистика</h3>
         <p>Оценка: @(Model.Score.HasValue ? Model.Score.Value.ToString("0.0") : "Rating is unknown.")</p>
-        <p>Эпизоды: @(Model.Episodes.HasValue ? Model.Episodes.Value.ToString() : "1000+")</p>
+        <p>Главы: @(Model.Chapters.HasValue ? Model.Chapters.Value.ToString() : "100+")</p>
         <p>Дата выхода: @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("dd.MM.yyyy") : "Release date is unknown.")</p>
     </div>
 
-    @if (Model.RelatedAnime != null && Model.RelatedAnime.Any())
+    @if (Model.RelatedManga != null && Model.RelatedManga.Any())
     {
-        <div class="related-anime-section">
+        <div class="related-manga-section">
             <h3>Связанное</h3>
-            <div class="related-anime-list">
-                @foreach (var related in Model.RelatedAnime)
+            <div class="related-manga-list">
+                @foreach (var related in Model.RelatedManga)
                 {
-                    <div class="related-anime-item">
+                    <div class="related-manga-item">
                         @if (@related.Type == "ANIME")
                         {
                             <a class="related-link" href="@Url.Action("Details", "Anime", new { id = related.Id })">
-                             <img src="@related.CoverImage" alt="Image @related.Title" />
-                             <p class="media-title">@related.Title</p>
-                             <p class="media-type">@related.Type</p>
-                             </a>
-                        } else {
-                             <a class="related-link" href="@Url.Action("Details", "Manga", new { id = related.Id })">
-                             <img src="@related.CoverImage" alt="Image @related.Title" />
+                                <img src="@related.CoverImage" alt="Image @related.Title" />
                                 <p class="media-title">@related.Title</p>
                                 <p class="media-type">@related.Type</p>
-                             </a>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="related-link" href="@Url.Action("Details", "Manga", new { id = related.Id })">
+                                <img src="@related.CoverImage" alt="Image @related.Title" />
+                                <p class="media-title">@related.Title</p>
+                                <p class="media-type">@related.Type</p>
+                            </a>
                         }
                     </div>
                 }
             </div>
         </div>
-    }
-
-    @if (!string.IsNullOrEmpty(trailerEmbedUrl))
-    {
-        <div class="trailer-section">
-            <h3>Трейлер</h3>
-            <div class="trailer-video">
-                <iframe width="560" height="315" src="@trailerEmbedUrl" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-    }
-
-    @if (Model.Characters != null && Model.Characters.Any())
-    {
-        <div class="characters-section">
-            <h3>Персонажи</h3>
-            <div class="characters-list">
-                @foreach (var character in Model.Characters)
-                {
-                    <div class="character-item">
-                        <a href="@Url.Action("Details", "Character", new { id = character.CharacterId })">
-                            <img src="@character.ImageUrl" alt="@character.Name" class="character-image" />
-                            <div class="character-info">
-                                <p class="character-name">@character.Name</p>
-                                <p class="character-role">Role: @character.Role</p>
-                            </div>
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-    }
-    else
-    {
-        <p>No characters available.</p>
     }
 </div>
 
@@ -134,7 +99,7 @@
         text-decoration: none;
     }
 
-    .anime-details {
+    .manga-details {
         max-width: 800px;
         margin: 20px auto;
         padding: 20px;
@@ -145,30 +110,30 @@
         font-family: 'Arial', sans-serif;
     }
 
-    .anime-header {
+    .manga-header {
         display: flex;
         align-items: flex-start;
         margin-bottom: 20px;
     }
 
-    .anime-image {
+    .manga-image {
         width: 200px;
         height: auto;
         border-radius: 10px;
         margin-right: 20px;
     }
 
-    .anime-info {
+    .manga-info {
         flex-grow: 1;
     }
 
-        .anime-info h1 {
+        .manga-info h1 {
             font-size: 32px;
             margin-bottom: 10px;
             color: #ffa500;
         }
 
-        .anime-info p {
+        .manga-info p {
             font-size: 16px;
             line-height: 1.6;
             text-align: justify;
@@ -198,16 +163,10 @@
 
     .genres-section,
     .statistics-section,
-    .related-anime-section,
-    .characters-section,
-    .trailer-section {
+    .related-manga-section {
         margin-top: 20px;
     }
 
-    .trailer-video {
-        display: flex;
-        justify-content: center;
-    }
     .genres-list {
         list-style-type: none;
         padding: 0;
@@ -230,13 +189,13 @@
         margin: 5px 0;
     }
 
-    .related-anime-list {
+    .related-manga-list {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
     }
 
-    .related-anime-item {
+    .related-manga-item {
         width: 180px;
         margin: 10px 0;
         padding: 10px;
@@ -245,55 +204,18 @@
         text-align: center;
     }
 
-        .related-anime-item img {
+        .related-manga-item img {
             width: 100%;
             height: auto;
             border-radius: 5px;
             margin-bottom: 10px;
         }
 
-        .related-anime-item p {
+        .related-manga-item p {
             font-size: 14px;
             margin-top: 5px;
             
         }
-
-    .characters-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .character-item {
-        width: 150px;
-        margin: 10px 0;
-        padding: 10px;
-        background-color: #2c2c2c;
-        border-radius: 10px;
-        text-align: center;
-    }
-
-    .character-image {
-        width: 100%;
-        height: auto;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .character-info {
-        color: #dcdcdc;
-    }
-
-    .character-name {
-        font-size: 14px;
-        margin-top: 10px;
-        color: #ffa500;
-    }
-
-    .character-role {
-        font-size: 12px;
-        color: #b0b0b0;
-    }
 
     .media-title {
         font-size: 14px;

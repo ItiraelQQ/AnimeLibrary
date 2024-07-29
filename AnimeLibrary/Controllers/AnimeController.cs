@@ -1,4 +1,5 @@
 ﻿using AnimeLibrary.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,12 +9,14 @@ namespace AnimeLibrary.Controllers
     public class AnimeController : Controller
     {
         private readonly AniListService _aniListService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AnimeController(AniListService aniListService)
+        public AnimeController(AniListService aniListService, UserManager<ApplicationUser> userManager)
         {
             _aniListService = aniListService;
+            _userManager = userManager;
         }
-
+        [ResponseCache(Duration = 60)]
         // Используйте асинхронный метод для получения данных
         public async Task<IActionResult> Details(int id)
         {
@@ -37,16 +40,18 @@ namespace AnimeLibrary.Controllers
                 Score = anime.Score,
                 StartDate = anime.StartDate,
                 Episodes = anime.Episodes,
-                RelatedAnime = relatedAnime
+                RelatedAnime = relatedAnime,
+                Characters = anime.Characters,
+                Trailer = anime.Trailer,
             };
 
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Genre(string genre)
+        public async Task<IActionResult> Genre(string genre, int page = 1, int perPage = 15)
         {
-            // Асинхронно получаем список аниме по жанру
-            var animeListByGenre = await _aniListService.ListAnimeGenre(genre);
+            // Асинхронно получаем список аниме по жанру и странице
+            var animeListByGenre = await _aniListService.ListAnimeGenre(genre, page, perPage);
             if (animeListByGenre == null || !animeListByGenre.Any())
             {
                 return NotFound();
@@ -62,82 +67,87 @@ namespace AnimeLibrary.Controllers
                 CoverImage = media.CoverImage.Large,
                 Description = media.Description,
                 Genres = media.Genres,
+                Genre = genre,
                 Score = media.Score,
                 Episodes = media.Episodes,
-                AverageScore = media.AverageScore
+                AverageScore = media.AverageScore,
             }).ToList();
 
             // Получаем список всех жанров для выпадающего меню или других элементов интерфейса
             var allGenres = await _aniListService.GetGenresAsync();
 
-            // Создаем HomeViewModel и инициализируем его свойства
-            var viewModel = new HomeViewModel
+            // Создаем AnimeGenreViewModel и инициализируем его свойства
+            var viewModel = new AnimeGenreViewModel
             {
-                // Инициализация списка аниме по жанру
-                Action = genre == "Action" ? animeViewModels : new List<AnimeViewModel>(),
-                AllAnimes = animeViewModels, // Убедитесь, что это свойство инициализировано правильно
-                                             // ... инициализация других списков по жанрам
-                Genres = allGenres ?? new List<string>(),
-                // ... инициализация других свойств
+                Genre = genre,
+                Animes = animeViewModels,
+                Genres = allGenres ?? new List<string>()
             };
 
             return View("Genre", viewModel);
         }
-
-
-        // КОД ДЛЯ ОТОБРАЖЕНИЯ ГОДОВ (НЕ ИСПОЛЬЗУЕТСЯ)
-        // Добавьте новый метод в AnimeController
-        /*public async Task<IActionResult> Year(int year)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToViewed(int id)
         {
-            // Асинхронно получаем список аниме по году выпуска
-            var animeListByYear = await _aniListService.GetAnimeByYearAsync(year);
-            if (animeListByYear == null || !animeListByYear.Any())
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var anime = await _aniListService.GetAnimeDetails(id);
+            if (anime == null)
             {
                 return NotFound();
             }
 
-            // Создаем экземпляр HomeViewModel
-            var homeViewModel = new HomeViewModel
+            if (user.ViewedAnimes == null)
             {
-                // Здесь предполагается, что у HomeViewModel есть свойство AllAnimes
-                AllAnimes = animeListByYear.Select(media => new AnimeViewModel
-                {
-                    Id = media.Id,
-                    RomajiTitle = media.Title.Romaji,
-                    EnglishTitle = media.Title.English,
-                    NativeTitle = media.Title.Native,
-                    CoverImage = media.CoverImage.Large,
-                    Description = media.Description,
-                    Genres = media.Genres,
-                    Score = media.Score,
-                    Episodes = media.Episodes,
-                    AverageScore = media.AverageScore
-                }).ToList()
-                // Добавьте другие свойства, если они есть и требуются для представления
-            };
+                user.ViewedAnimes = new List<int>();
+            }
 
-            // Возвращаем представление с моделью HomeViewModel
-            return View(homeViewModel);
+            if (!user.ViewedAnimes.Contains(anime.Id))
+            {
+                user.ViewedAnimes.Add(anime.Id);
+                await _userManager.UpdateAsync(user);
+            }
+
+            return RedirectToAction("ViewedContent", "Account");
         }
-        */
-        // Добавьте этот метод в класс AnimeController
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromViewed(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (user.ViewedAnimes == null || !user.ViewedAnimes.Contains(id))
+            {
+                return NotFound();
+            }
+
+            user.ViewedAnimes.Remove(id);
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("ViewedContent", "Account");
+        }
+
         public async Task<IActionResult> Search(string title)
         {
-            // Проверяем, не пуста ли строка поиска
             if (string.IsNullOrWhiteSpace(title))
             {
-                // Возвращаем представление с сообщением о том, что поиск не может быть пустым
-                return View("SearchResults", new List<AnimeViewModel>());
+                return PartialView("_SearchResults", new List<AnimeViewModel>());
             }
 
             try
             {
-                // Выполняем поиск аниме по названию
                 var searchResults = await _aniListService.SearchAnimeByTitleAsync(title);
                 var animeList = searchResults["Page"]["media"].ToObject<List<Media>>();
 
-                
-                // Преобразуем полученные данные в список AnimeViewModel
                 var animeViewModels = animeList.Select(media => new AnimeViewModel
                 {
                     Id = media.Id,
@@ -150,19 +160,46 @@ namespace AnimeLibrary.Controllers
                     Score = media.Score.HasValue ? media.Score.Value / 10.0 : (double?)null,
                     Episodes = media.Episodes,
                     AverageScore = media.AverageScore,
-                    
                 }).ToList();
 
-                // Возвращаем представление с результатами поиска
-                return View("SearchResults", animeViewModels);
+                return PartialView("_SearchResults", animeViewModels);
             }
             catch (Exception ex)
             {
-                // Логируем исключение и возвращаем представление с ошибкой
                 ViewBag.ErrorMessage = ex.Message;
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return PartialView("_SearchResults", new List<AnimeViewModel>());
             }
         }
+
+        public async Task<IActionResult> LoadMoreAnime(string genre, int page = 1, int perPage = 15)
+        {
+            // Асинхронно получаем список аниме по жанру и странице
+            var animeListByGenre = await _aniListService.ListAnimeGenre(genre, page, perPage);
+            if (animeListByGenre == null || !animeListByGenre.Any())
+            {
+                return NotFound();
+            }
+
+            // Преобразуем список Media в список AnimeViewModel
+            var animeViewModels = animeListByGenre.Select(media => new AnimeViewModel
+            {
+                Id = media.Id,
+                RomajiTitle = media.Title.Romaji,
+                EnglishTitle = media.Title.English,
+                NativeTitle = media.Title.Native,
+                CoverImage = media.CoverImage.Large,
+                Description = media.Description,
+                Genres = media.Genres,
+                Genre = genre,
+                Score = media.Score,
+                Episodes = media.Episodes,
+                AverageScore = media.AverageScore,
+            }).ToList();
+
+            return PartialView("_AnimeListPartial", animeViewModels);
+        }
+
+
 
 
     }

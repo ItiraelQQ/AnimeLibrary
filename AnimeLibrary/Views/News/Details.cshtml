@@ -1,0 +1,83 @@
+﻿@model News
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="news-detail">
+    <div class="news-header">
+        <img src="@Model.ImageUrl" alt="News Image" class="news-image" />
+        <div class="news-info">
+            <h1>@Model.Title</h1>
+            <p><strong>Published:</strong> @Model.CreatedAt.ToString("dd MMM yyyy")</p>
+        </div>
+    </div>
+    <div class="news-content">
+        <p>@Model.FullText</p>
+    </div>
+    <a href="@Url.Action("Index", "News")" class="btn btn-back">Back to News List</a>
+</div>
+
+<style>
+    .news-detail {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #1c1c1c;
+        border-radius: 10px;
+        color: #f0f0f0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .news-header {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .news-image {
+        width: 300px;
+        height: auto;
+        border-radius: 10px;
+        margin-right: 20px;
+    }
+
+    .news-info {
+        flex-grow: 1;
+    }
+
+        .news-info h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #ffa500;
+        }
+
+        .news-info p {
+            font-size: 16px;
+            color: #e0e0e0;
+        }
+
+    .news-content {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #dcdcdc;
+        margin-top: 20px;
+    }
+
+    .btn-back {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s, border-color 0.3s;
+        margin-top: 20px;
+    }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+            border-color: #004494;
+        }
+</style>

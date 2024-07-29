@@ -1,0 +1,11 @@
+﻿@model List<AnimeLibrary.Models.MangaViewModel>
+
+@foreach (var manga in Model)
+{
+    <div class="anime-item">
+        <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id">
+            <h3 class="anime-title">@manga.TitleRomaji</h3>
+            <img src="@manga.CoverImage" alt="@manga.TitleRomaji" />
+        </a>
+    </div>
+}

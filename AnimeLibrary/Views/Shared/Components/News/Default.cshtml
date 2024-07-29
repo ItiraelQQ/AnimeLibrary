@@ -1,0 +1,83 @@
+﻿@model IEnumerable<AnimeLibrary.Models.News>
+
+@if (Model != null && Model.Any())
+{
+    <div class="news-list">
+        @foreach (var item in Model)
+        {
+            <a href="@Url.Action("Details", "News", new { id = item.Id })">
+            <div class="news-item">
+                <img src="@item.ImageUrl" alt="News Image" class="news-image" />
+                <div class="news-content">
+                    <h4 class="news-title">@item.Title</h4>
+                    <p class="news-text">@item.Content</p>
+                    <p class="news-date"><small>@item.CreatedAt.ToString("dd MMM yyyy")</small></p>
+                </div>
+            </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <p>Новости не найдены.</p>
+}
+
+<style>
+    .news-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #1e1e1e; /* Темный фон для всего списка новостей */
+        padding: 20px;
+        border-radius: 8px;
+        color: #e0e0e0; /* Светлый цвет текста для лучшего контраста на темном фоне */
+    }
+
+    .news-item {
+        display: flex;
+        border: 1px solid #444; /* Темная граница для новостей */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Более темная тень */
+        background: #2c2c2c; /* Темный фон для каждой новости */
+        padding: 16px;
+        transition: box-shadow 0.3s;
+    }
+
+        .news-item:hover .news-title {
+            color: #ffa500; /* Цвет заголовка при наведении */
+        }
+
+    .news-image {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        margin-right: 16px;
+        border-radius: 4px;
+    }
+
+    .news-content {
+        flex: 1;
+    }
+
+    .news-title {
+        font-size: 18px;
+        margin: 0;
+        margin-bottom: 8px;
+        color: #f5f5f5; /* Светлый цвет для заголовка на темном фоне */
+    }
+    
+    .news-text {
+        font-size: 14px;
+        color: #d0d0d0; /* Светлый цвет для текста новости */
+        margin: 0;
+        margin-bottom: 8px;
+    }
+
+    .news-date {
+        font-size: 12px;
+        color: #b0b0b0; /* Еще более светлый цвет для даты */
+        margin: 0;
+    }
+</style>

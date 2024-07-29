@@ -1,69 +1,65 @@
-﻿@model AnimeLibrary.Models.HomeViewModel
-@using Microsoft.AspNetCore.Identity
-@using AnimeLibrary.Models 
-@inject UserManager<ApplicationUser> UserManager
-@inject SignInManager<ApplicationUser> SignInManager
-
-
+﻿@model AnimeLibrary.Models.MangaViewModel
 
 @{
     ViewData["Title"] = "Main Page";
-    var isAuthenticated = User.Identity.IsAuthenticated;
-    var userName = isAuthenticated ? UserManager.GetUserName(User) : null;
 }
 
-<form id="searchForm" asp-controller="Anime" asp-action="Search" method="get">
-    <input type="text" id="searchInput" name="title" placeholder="Поиск аниме..." autocomplete="off" onkeypress="return disableEnterKey(event);" />
+<form id="searchForm" asp-controller="Manga" asp-action="Search" method="get">
+    <input type="text" id="searchInput" name="title" placeholder="Search Manga..." autocomplete="off" />
     <div id="searchResults" class="dropdown-content-search"></div>
 </form>
+
+
+
+<h2 class="category">Сейчас в тренде</h2>
+<div class="anime-list">
+    @foreach (var manga in Model.TrendingManga)
+    {
+        <div class="anime-item">
+            <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id">
+                <img src="@manga.CoverImage" alt="@manga.TitleRomaji" />
+                <h3 class="anime-title">@manga.TitleRomaji</h3>
+                
+            </a>
+        </div>
+    }
+</div>
+
+<h2 class="category">Популярное</h2>
+<div class="anime-list">
+    @foreach (var manga in Model.PopularManga)
+    {
+        <div class="anime-item">
+            <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id">
+                <img src="@manga.CoverImage" alt="@manga.TitleRomaji" />
+                <h3 class="anime-title">@manga.TitleRomaji</h3>
+                
+            </a>
+        </div>
+    }
+</div>
+<h3>Новости</h3>
+
+@await Component.InvokeAsync("News")
+<a asp-controller="News" asp-action="Index" class="btn btn-primary">Все новости</a>
 
 <div class="dropdown-content">
     @foreach (var genre in Model.Genres)
     {
         if (genre != "Hentai")
         {
-            <a asp-controller="Anime" asp-action="Genre" asp-route-genre="@genre">@genre</a>
+            <a asp-controller="Manga" asp-action="Genre" asp-route-genre="@genre">@genre</a>
         }
-
+        
     }
 </div>
-
-<!--<button class="dropdown-btn">Year</button>
-<div class="dropdown-content">
-    @foreach (var year in Model.Years)
-    {
-        <a asp-controller="Anime" asp-action="Year" asp-route-year="@year">@year</a>
-    }
-</div> -->
-
-
-<h2 class="category">Текущий сезон: Лето 2024</h2>
-<div class="anime-list">
-    @foreach (var anime in Model.CurrentSeason)
-    {
-        <div class="anime-item">
-            <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
-            <img src="@anime.CoverImage" alt="@anime.RomajiTitle" />
-            <h3 class="anime-title">@anime.RomajiTitle</h3> 
-            </a>
-        </div>
-    }
-</div>
-
-<h3>Новости</h3>
-
-@await Component.InvokeAsync("News")
-
-
-
-<a asp-controller="News" asp-action="Index" class="btn btn-primary">Все новости</a>
-
-
 <div class="dropdown">
     <button class="dropdown-btn">☰ Menu</button>
     <div class="dropdown-content">
     </div>
 </div>
+
+
 <style>
     .dropdown-content {
         display: block; /* Скрываем по умолчанию */
@@ -124,9 +120,9 @@
             top: 100px;
         }
 
-        .dropdown-btn.active + .dropdown-content {
-            display: block; /* Отображаем меню при нажатии на кнопку */
-        }
+            .dropdown-btn.active + .dropdown-content {
+                display: block; /* Отображаем меню при нажатии на кнопку */
+            }
     }
 
     .anime-list {
@@ -137,24 +133,24 @@
         max-height: 340px;
     }
 
-    /* Стилизация полосы прокрутки для Webkit-браузеров */
-    .anime-list::-webkit-scrollbar {
-        height: 10px; /* Высота полосы прокрутки */
-    }
+        /* Стилизация полосы прокрутки для Webkit-браузеров */
+        .anime-list::-webkit-scrollbar {
+            height: 10px; /* Высота полосы прокрутки */
+        }
 
-    .anime-list::-webkit-scrollbar-track {
-        background: transparent; /* Цвет дорожки полосы прокрутки */
-        border-radius: 20px; /* Скругление углов дорожки для более гладких углов */
-    }
+        .anime-list::-webkit-scrollbar-track {
+            background: transparent; /* Цвет дорожки полосы прокрутки */
+            border-radius: 20px; /* Скругление углов дорожки для более гладких углов */
+        }
 
-    .anime-list::-webkit-scrollbar-thumb {
-        background: #ffa500; /* Оранжевый цвет ползунка полосы прокрутки */
-        border-radius: 20px; /* Скругление углов ползунка для более гладких углов */
-    }
+        .anime-list::-webkit-scrollbar-thumb {
+            background: #ffa500; /* Оранжевый цвет ползунка полосы прокрутки */
+            border-radius: 20px; /* Скругление углов ползунка для более гладких углов */
+        }
 
-    .anime-list::-webkit-scrollbar-thumb:hover {
-        background: #ff8c00; /* Темно-оранжевый цвет ползунка при наведении */
-    }
+            .anime-list::-webkit-scrollbar-thumb:hover {
+                background: #ff8c00; /* Темно-оранжевый цвет ползунка при наведении */
+            }
 
     /* Стилизация полосы прокрутки для Firefox */
     .anime-list {
@@ -167,7 +163,7 @@
         -ms-overflow-style: -ms-autohiding-scrollbar; /* Автоматическое скрытие полосы прокрутки */
     }
 
-    .category  {
+    .category {
         font-family: 'B612', sans-serif;
         font-style: italic;
         font-weight: 700;
@@ -182,15 +178,15 @@
         transition: transform 0.3s ease;
     }
 
-    .anime-item:hover {
-        transform: scale(1.1); /* Scale the image to 110% on hover */
-    }
+        .anime-item:hover {
+            transform: scale(1.1); /* Scale the image to 110% on hover */
+        }
 
-    .anime-item img {
-        width: 150px;
-        height: 225px;
-        object-fit: cover;
-    }
+        .anime-item img {
+            width: 150px;
+            height: 225px;
+            object-fit: cover;
+        }
 
     .anime-title {
         font-family: 'B612', sans-serif;
@@ -224,9 +220,26 @@
         color: white; /* Цвет ссылок теперь черный */
     }
 
-    /* Добавляем эффект при наведении для ссылок */
-    a:hover {
-        color: #ffa500; /* Цвет ссылок при наведении курсора */
+        /* Добавляем эффект при наведении для ссылок */
+        a:hover {
+            color: #ffa500; /* Цвет ссылок при наведении курсора */
+        }
+
+    @@media (max-width: 768px) {
+        .anime-list {
+            /* Переход на колонную верстку для узких экранов */
+            max-height: none; /* Отмена ограничения по высоте */
+        }
+
+        .anime-item {
+            margin-bottom: 20px; /* Добавляем отступ снизу между элементами */
+            max-width: 20%; /* Расширяем элементы до 100% ширины контейнера */
+        }
+
+            .anime-item img {
+                width: 100%; /* Изображение занимает всю ширину элемента */
+                height: auto; /* Автоматическая высота */
+            }
     }
 
     .dropdown-content-search {
@@ -253,26 +266,9 @@
                 background-color: #555;
             }
 
-    @@media (max-width: 768px) {
-        .anime-list {
-             /* Переход на колонную верстку для узких экранов */
-            max-height: none; /* Отмена ограничения по высоте */
-        }
-
-        .anime-item {
-            margin-bottom: 20px; /* Добавляем отступ снизу между элементами */
-            max-width: 20%; /* Расширяем элементы до 100% ширины контейнера */
-        }
-
-        .anime-item img {
-            width: 100%; /* Изображение занимает всю ширину элемента */
-            height: auto; /* Автоматическая высота */
-        }
-    }
-
     @@media (max-width: 480px) {
         .dropdown-content {
-            display:none;
+            display: none;
             min-width: 100px; /* Уменьшаем минимальную ширину для мобильных устройств */
             top: 100px; /* Сдвигаем вниз для мобильных устройств */
         }
@@ -286,13 +282,13 @@
             padding: 3px 7px; /* Уменьшаем отступы */
         }
     }
-
-    @@media (max-width: 1000px) {
-        .dropdown-content {
+    @@media (max-width: 1000px){
+        .dropdown-content{
             display: none;
         }
     }
 </style>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -308,14 +304,13 @@
         });
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#searchInput').on('input', function () {
             var query = $(this).val();
             if (query.length > 2) { // Начать поиск, если длина строки больше 2 символов
                 $.ajax({
-                    url: '@Url.Action("Search", "Anime")', // URL вашего действия контроллера
+                    url: '@Url.Action("Search", "Manga")', // URL вашего действия контроллера
                     type: 'GET',
                     data: { title: query },
                     success: function (data) {
@@ -336,12 +331,4 @@
             }
         });
     });
-</script>
-<script>
-    function disableEnterKey(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            return false;
-        }
-    }
 </script>

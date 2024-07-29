@@ -1,0 +1,109 @@
+﻿@model EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Изменить профиль</h2>
+
+    <form asp-action="EditProfile" method="post" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label">User Name</label>
+            <input asp-for="UserName" class="form-control" required />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfilePictureUrl" class="control-label">Ссылка на картинку для аватарки</label>
+            <input asp-for="ProfilePictureUrl" class="form-control" required />
+            <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Bio" class="control-label">О себе</label>
+            <textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Bio" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Сохранить изменения</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // JavaScript for client-side form validation
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
+
+<style>
+   
+    body {
+        background-color: black;
+    }
+
+    .container {
+        background-color: #212121;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-weight: bold;
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .text-danger {
+        font-size: 0.875em;
+    }
+
+</style>

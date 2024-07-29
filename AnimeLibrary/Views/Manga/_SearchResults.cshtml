@@ -1,0 +1,85 @@
+﻿@model List<AnimeLibrary.Models.MangaViewModel>
+
+<div class="search-results">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var manga in Model)
+        {
+            <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id" class="search-result-item">
+                <div class="anime-item">
+                    <img src="@manga.CoverImage" alt="@manga.TitleEnglish" class="anime-cover" />
+                    <div class="anime-info">
+                        <h3 class="anime-title">@manga.TitleEnglish</h3>
+                        <p class="anime-description">@manga.Description</p>
+                    </div>
+                </div>
+            </a>
+        }
+    }
+    else
+    {
+        <p class="no-results">No results found</p>
+    }
+</div>
+<style>
+    .search-results {
+        display: flex;
+        flex-direction: column;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .search-result-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #333;
+        text-decoration: none;
+        color: white;
+    }
+
+        .search-result-item:hover {
+            background-color: #333;
+        }
+
+    .anime-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .anime-cover {
+        width: 50px;
+        height: 75px;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .anime-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .anime-title {
+        font-size: 16px;
+        margin: 0;
+        color: #ffa500;
+    }
+
+    .anime-description {
+        font-size: 12px;
+        color: #ccc;
+        margin: 5px 0 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 120px;
+    }
+
+    .no-results {
+        text-align: center;
+        color: #ccc;
+        padding: 10px;
+    }
+</style>

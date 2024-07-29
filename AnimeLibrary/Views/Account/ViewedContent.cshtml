@@ -1,0 +1,141 @@
+﻿@model ViewedContentViewModel
+
+@{
+    ViewData["Title"] = "Viewed Content";
+}
+
+<h2>Просмотренный контент</h2>
+
+<div>
+    <button class="btn btn-secondary" id="toggleAnime">Показать аниме</button>
+    <button class="btn btn-secondary" id="toggleManga">Показать мангу</button>
+</div>
+
+<div id="content">
+    <div id="animeSection">
+        <h3>Просмотренное аниме</h3>
+        <div class="content-container">
+            @foreach (var anime in Model.ViewedAnimes)
+            {
+                <div class="content-item">
+                    <a asp-controller="Anime" asp-action="Details" asp-route-id="@anime.Id">
+                        <img src="@anime.CoverImage" alt="@anime.RomajiTitle" class="img-fluid" />
+                        <p>@anime.RomajiTitle</p>
+                    </a>
+                   
+                </div>
+            }
+        </div>
+    </div>
+    <div id="mangaSection" style="display:none;">
+        <h3>Просмотренная манга</h3>
+        <div class="content-container">
+            @foreach (var manga in Model.ViewedMangas)
+            {
+                <div class="content-item">
+                    <a asp-controller="Manga" asp-action="Details" asp-route-id="@manga.Id">
+                        <img src="@manga.CoverImage" alt="@manga.TitleRomaji" class="img-fluid" />
+                        <p>@manga.TitleRomaji</p>
+                    </a>
+                    
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggleAnime').addEventListener('click', function () {
+        document.getElementById('animeSection').style.display = 'block';
+        document.getElementById('mangaSection').style.display = 'none';
+    });
+    document.getElementById('toggleManga').addEventListener('click', function () {
+        document.getElementById('animeSection').style.display = 'none';
+        document.getElementById('mangaSection').style.display = 'block';
+    });
+</script>
+
+<style>
+    body {
+        background-color: black;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #333;
+    }
+
+    h3 {
+        font-weight: bold;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.1em;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .content-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px; /* Уменьшил отступы между карточками */
+    }
+
+    .content-item {
+        flex: 1 1 calc(20% - 15px); /* Уменьшил размер карточек */
+        box-sizing: border-box;
+        background-color: #fff;
+        padding: 10px; /* Уменьшил внутренние отступы */
+        border-radius: 5px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 150px; /* Задал максимальную ширину карточек */
+    }
+
+        .content-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            max-height: 200px; /* Установил максимальную высоту для изображений */
+            object-fit: cover; /* Обеспечивает корректное отображение изображений */
+        }
+</style>
