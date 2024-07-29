@@ -1,4 +1,4 @@
-## Description 
+## Description (Version 0.4.5)
 ### RU
 AnimeLibrary - некоммерческий персональный ASP.NET 8 Web-проект. Использует AniList API для отображения информации об аниме и манге. 
 ### EN
