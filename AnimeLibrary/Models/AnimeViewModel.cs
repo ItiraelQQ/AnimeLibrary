@@ -17,7 +17,7 @@
         public string RelationType { get; set; }
         public string? Genre { get; set; }
         public List<Media> Animes { get; set; }
-        public List<RelatedAnimeViewModel> RelatedAnime { get; set; } // Связанные аниме
+        public List<RelatedAnimeViewModel> RelatedAnime { get; set; }
         public List<CharacterViewModel> Characters { get; set; }
 
         public class RelatedAnimeViewModel
@@ -55,7 +55,7 @@
         public List<string>? Genres { get; set; }
         public string? Genre {  get; set; }
         public List<int>? Years { get; set; }
-        public List<AnimeViewModel>? AllAnimes { get; set; } // Изменено на List<AnimeViewModel>
+        public List<AnimeViewModel>? AllAnimes { get; set; }
         public List<MangaViewModel>? AllMangas { get; set; }
 
         public IEnumerable<News> News { get; set; }

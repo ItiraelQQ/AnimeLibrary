@@ -42,7 +42,6 @@ public class MangaController : Controller
             return NotFound();
         }
         var relatedManga = await _aniListService.GetRelatedMangaAsync(id);
-        // Создаем ViewModel, используя данные аниме
         var viewModel = new MangaViewModel
         {
             Id = manga.Id,
@@ -70,7 +69,6 @@ public class MangaController : Controller
             return NotFound();
         }
 
-        // Преобразуем список Media в список MangaViewModel
         var mangaViewModels = mangaListByGenre.Select(media => new MangaViewModel
         {
             Id = media.Id,
@@ -86,10 +84,8 @@ public class MangaController : Controller
             AverageScore = media.AverageScore
         }).ToList();
 
-        // Получаем список всех жанров для выпадающего меню или других элементов интерфейса
         var allGenres = await _aniListService.GetGenresAsync();
 
-        // Создаем AnimeGenreViewModel и инициализируем его свойства
         var viewModel = new MangaGenreViewModel
         {
             Genre = genre,
@@ -191,7 +187,6 @@ public class MangaController : Controller
             return NotFound();
         }
 
-        // Преобразуем список Media в список AnimeViewModel
         var mangaViewModels = mangaListByGenre.Select(media => new MangaViewModel
         {
             Id = media.Id,

@@ -17,7 +17,7 @@
             public double? AverageScore { get; set; }
             public string MediaType { get; set; } = "Anime";
             public List<Media> Animes { get; set; }
-            public List<RelatedAnimeViewModel> RelatedAnime { get; set; } // Связанные аниме
+            public List<RelatedAnimeViewModel> RelatedAnime { get; set; }
             public List<CharacterViewModel> Characters { get; set; }
 
             public class RelatedAnimeViewModel
@@ -45,7 +45,7 @@
             public List<AnimeViewModel> Ecchi { get; set; }
             public List<string>? Genres { get; set; }
             public List<int>? Years { get; set; }
-            public List<AnimeViewModel>? AllAnimes { get; set; } // Изменено на List<AnimeViewModel>
+            public List<AnimeViewModel>? AllAnimes { get; set; }
 
 
         }

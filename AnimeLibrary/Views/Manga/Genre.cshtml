@@ -18,7 +18,7 @@
                 <div class="anime-title">@manga.TitleRomaji</div>
                 <img src="@manga.CoverImage" alt="@manga.TitleRomaji" />
                 <div class="anime-description">
-                    @Html.Raw(manga.Description) <!-- Используйте Html.Raw, если описание содержит HTML -->
+                    @Html.Raw(manga.Description)
                 </div>
             </a>
         </div>
@@ -60,7 +60,7 @@
 <style>
     .dropdown-content {
         position: fixed;
-        top: 100px; /* Обновлено для мобильных устройств */
+        top: 100px;
         left: 0;
         display: block;
         background-color: black;

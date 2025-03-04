@@ -17,17 +17,14 @@ namespace AnimeLibrary.Controllers
             _userManager = userManager;
         }
         [ResponseCache(Duration = 60)]
-        // Используйте асинхронный метод для получения данных
         public async Task<IActionResult> Details(int id)
         {
-            // Асинхронно получаем данные об аниме
             var anime = await _aniListService.GetAnimeDetails(id);
             if (anime == null)
             {
                 return NotFound();
             }
             var relatedAnime = await _aniListService.GetRelatedAnimeAsync(id);
-            // Создаем ViewModel, используя данные аниме
             var viewModel = new AnimeViewModel
             {
                 Id = anime.Id,
@@ -73,10 +70,8 @@ namespace AnimeLibrary.Controllers
                 AverageScore = media.AverageScore,
             }).ToList();
 
-            // Получаем список всех жанров для выпадающего меню или других элементов интерфейса
             var allGenres = await _aniListService.GetGenresAsync();
 
-            // Создаем AnimeGenreViewModel и инициализируем его свойства
             var viewModel = new AnimeGenreViewModel
             {
                 Genre = genre,
@@ -173,14 +168,12 @@ namespace AnimeLibrary.Controllers
 
         public async Task<IActionResult> LoadMoreAnime(string genre, int page = 1, int perPage = 15)
         {
-            // Асинхронно получаем список аниме по жанру и странице
             var animeListByGenre = await _aniListService.ListAnimeGenre(genre, page, perPage);
             if (animeListByGenre == null || !animeListByGenre.Any())
             {
                 return NotFound();
             }
 
-            // Преобразуем список Media в список AnimeViewModel
             var animeViewModels = animeListByGenre.Select(media => new AnimeViewModel
             {
                 Id = media.Id,

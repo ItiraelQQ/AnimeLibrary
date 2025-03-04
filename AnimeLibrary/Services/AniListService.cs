@@ -177,7 +177,7 @@ public class AniListService
             Query = @"
         query {
           Page(page: 1, perPage: 20) {
-            media(season: SUMMER, seasonYear: 2024, type: ANIME, sort: POPULARITY_DESC) {
+            media(season: WINTER, seasonYear: 2025, type: ANIME, sort: POPULARITY_DESC) {
               id
               title {
                 romaji
@@ -199,7 +199,6 @@ public class AniListService
         }
         else
         {
-            // Создание сообщения об ошибке, содержащего детали каждой ошибки GraphQL
             var errorMessages = response.Errors.Select(e => $"{e.Message} (Location: {e.Locations})");
             var errorMessage = string.Join("\n", errorMessages);
             throw new Exception($"GraphQL query failed with errors:\n{errorMessage}");
@@ -223,7 +222,6 @@ public class AniListService
         }
         else
         {
-            // Обработка ошибок GraphQL
             var errorMessages = response.Errors.Select(e => $"{e.Message} (Location: {e.Locations})");
             var errorMessage = string.Join("\n", errorMessages);
             throw new Exception($"GraphQL query failed with errors:\n{errorMessage}");
@@ -232,7 +230,6 @@ public class AniListService
     // getting years (not used)
     public async Task<List<int>> GetYearsAsync()
     {
-        // Предполагаем, что AniList API предоставляет список годов, если нет, вам нужно будет его сгенерировать
         var currentYear = DateTime.UtcNow.Year;
         var years = Enumerable.Range(currentYear - 35, 36).OrderByDescending(year => year).ToList(); // Пример: последние 10 лет + текущий год
         return await Task.FromResult(years);
@@ -332,7 +329,6 @@ public class AniListService
         }
         else
         {
-            // Обработка ошибок GraphQL
             var errorMessages = response.Errors.Select(e => $"{e.Message} (Location: {e.Locations})");
             var errorMessage = string.Join("\n", errorMessages);
             throw new Exception($"GraphQL query failed with errors:\n{errorMessage}");
@@ -711,7 +707,7 @@ public class AniListService
 
         return relations ?? new List<MangaViewModel.RelatedMangaViewModel>();
     }
-    // ???
+    // content = anime or manga
     public async Task<string> GetContentTypeById(int id)
     {
         var query = new GraphQLRequest
@@ -728,28 +724,24 @@ public class AniListService
         var response = await _client.SendQueryAsync<dynamic>(query);
         var mediaType = response.Data.Media?.type?.ToString();
 
-        // Возвращаем тип контента (anime или manga)
         return mediaType;
     }
 
-    // ???
+    // getting to detail page anime or manga
     public async Task<string> GetCorrectDetailPageUrl(int id)
     {
         var contentType = await GetContentTypeById(id);
 
         if (contentType == "ANIME")
         {
-            // Return URL for anime details page
             return $"/Anime/Details/{id}";
         }
         else if (contentType == "MANGA")
         {
-            // Return URL for manga details page
             return $"/Manga/Details/{id}";
         }
         else
         {
-            // Handle other cases or errors
             throw new Exception("Unknown content type");
         }
     }
@@ -793,7 +785,6 @@ public class AniListService
         }
         catch (Exception ex)
         {
-            // Логирование ошибки
             Console.WriteLine($"Ошибка при получении данных персонажа: {ex.Message}");
             return null;
         }
@@ -852,7 +843,6 @@ public class AniListService
         }
         catch (Exception ex)
         {
-            // Логирование ошибки
             Console.WriteLine($"Ошибка при получении данных персонажа: {ex.Message}");
             return new List<CharacterViewModel.CharacterRelated>();
         }

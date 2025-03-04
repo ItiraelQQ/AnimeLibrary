@@ -147,7 +147,7 @@ public class AccountController : Controller
             return NotFound();
         }
 
-        user.ProfilePictureUrl = model.ProfilePictureUrl; // Примените изменения к модели пользователя
+        user.ProfilePictureUrl = model.ProfilePictureUrl;
         var result = await _userManager.UpdateAsync(user);
 
         if (result.Succeeded)
@@ -176,7 +176,7 @@ public class AccountController : Controller
         {
             UserName = user.UserName,
             ProfilePictureUrl = user.ProfilePictureUrl,
-            Bio = user.Bio  // Добавляем текущее значение Bio
+            Bio = user.Bio
         };
 
         return View(model);
@@ -196,7 +196,7 @@ public class AccountController : Controller
 
             user.UserName = model.UserName;
             user.ProfilePictureUrl = model.ProfilePictureUrl;
-            user.Bio = model.Bio;  // Обновляем значение Bio
+            user.Bio = model.Bio;
 
             var result = await _userManager.UpdateAsync(user);
 

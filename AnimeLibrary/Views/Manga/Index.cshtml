@@ -62,105 +62,101 @@
 
 <style>
     .dropdown-content {
-        display: block; /* Скрываем по умолчанию */
-        position: fixed; /* Фиксированная позиция */
-        top: 100px; /* Располагаем список немного ниже верхнего края */
-        left: 0; /* Прикрепляем список к правому краю страницы */
-        background-color: black; /* Цвет фона */
-        min-width: 160px; /* Минимальная ширина */
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Тень */
-        z-index: 1; /* На переднем плане */
-        max-height: 575px; /* Максимальная высота списка для возможности прокрутки */
-        overflow-y: auto; /* Включаем вертикальную прокрутку */
+        display: block; 
+        position: fixed;
+        top: 100px;
+        left: 0;
+        background-color: black;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        max-height: 575px;
+        overflow-y: auto;
     }
 
         .dropdown-content::-webkit-scrollbar {
-            width: 5px; /* Ширина полосы прокрутки */
+            width: 5px;
         }
 
         .dropdown-content::-webkit-scrollbar-thumb {
-            background-color: #888; /* Цвет ползунка */
-            border-radius: 10px; /* Скругление углов ползунка */
+            background-color: #888;
+            border-radius: 10px; 
         }
 
         .dropdown-content a {
-            display: block; /* Сделать ссылки блочными элементами */
-            padding: 12px 16px; /* Отступы вокруг текста ссылок */
-            color: white; /* Цвет текста ссылок */
-            text-decoration: none; /* Убираем подчеркивание текста ссылок */
+            display: block;
+            padding: 12px 16px;
+            color: white;
+            text-decoration: none;
         }
 
             .dropdown-content a:hover {
-                background-color: #555; /* Цвет фона ссылок при наведении */
+                background-color: #555;
             }
 
     .dropdown-btn {
-        display: none; /* Скрываем кнопку по умолчанию */
-        background-color: black; /* Цвет фона кнопки */
-        color: white; /* Цвет текста кнопки */
-        padding: 10px 15px; /* Отступы вокруг текста кнопки */
-        border: none; /* Убираем рамку кнопки */
-        cursor: pointer; /* Курсор указателя */
-        font-size: 16px; /* Размер шрифта */
-        position: fixed; /* Фиксированная позиция */
-        top: 10px; /* Располагаем кнопку немного ниже верхнего края */
-        right: 10px; /* Располагаем кнопку справа */
-        z-index: 2; /* На переднем плане */
+        display: none;
+        background-color: black;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
     }
 
         .dropdown-btn:hover {
-            background-color: #555; /* Цвет фона кнопки при наведении */
+            background-color: #555;
         }
 
     /* Медиазапросы для мобильных устройств */
-    /* Медиазапросы для мобильных устройств */
     @@media (max-width: 768px) {
         .dropdown-btn {
-            display: block; /* Отображаем кнопку на мобильных устройствах */
+            display: block; 
             top: 100px;
         }
 
             .dropdown-btn.active + .dropdown-content {
-                display: block; /* Отображаем меню при нажатии на кнопку */
+                display: block;
             }
     }
 
     .anime-list {
         display: flex;
-        overflow-x: auto; /* Скрыли полосу прокрутки*/
+        overflow-x: auto; 
         overflow-y: hidden;
         padding: 10px;
         max-height: 340px;
     }
 
-        /* Стилизация полосы прокрутки для Webkit-браузеров */
         .anime-list::-webkit-scrollbar {
-            height: 10px; /* Высота полосы прокрутки */
+            height: 10px;
         }
 
         .anime-list::-webkit-scrollbar-track {
-            background: transparent; /* Цвет дорожки полосы прокрутки */
-            border-radius: 20px; /* Скругление углов дорожки для более гладких углов */
+            background: transparent;
+            border-radius: 20px;
         }
 
         .anime-list::-webkit-scrollbar-thumb {
-            background: #ffa500; /* Оранжевый цвет ползунка полосы прокрутки */
-            border-radius: 20px; /* Скругление углов ползунка для более гладких углов */
+            background: #ffa500;
+            border-radius: 20px;
         }
 
             .anime-list::-webkit-scrollbar-thumb:hover {
-                background: #ff8c00; /* Темно-оранжевый цвет ползунка при наведении */
+                background: #ff8c00;
             }
 
-    /* Стилизация полосы прокрутки для Firefox */
     .anime-list {
-        scrollbar-width: thin; /* Толщина полосы прокрутки */
-        scrollbar-color: #ffa500 transparent; /* Оранжевый цвет ползунка и светлый цвет дорожки */
+        scrollbar-width: thin;
+        scrollbar-color: #ffa500 transparent;
     }
 
-    /* Стилизация полосы прокрутки для IE и Edge */
     .anime-list {
-        -ms-overflow-style: -ms-autohiding-scrollbar; /* Автоматическое скрытие полосы прокрутки */
+        -ms-overflow-style: -ms-autohiding-scrollbar;
     }
 
     .category {
@@ -179,7 +175,7 @@
     }
 
         .anime-item:hover {
-            transform: scale(1.1); /* Scale the image to 110% on hover */
+            transform: scale(1.1);
         }
 
         .anime-item img {
@@ -210,49 +206,44 @@
         color: #333;
     }
 
-    /* Убираем подчеркивание у всех ссылок */
     a {
-        text-decoration: none; /* Убирает подчеркивание текста */
+        text-decoration: none;
     }
 
-    /* Изменяем цвет ссылок */
     a {
-        color: white; /* Цвет ссылок теперь черный */
+        color: white;
     }
-
-        /* Добавляем эффект при наведении для ссылок */
         a:hover {
-            color: #ffa500; /* Цвет ссылок при наведении курсора */
+            color: #ffa500;
         }
 
     @@media (max-width: 768px) {
         .anime-list {
-            /* Переход на колонную верстку для узких экранов */
-            max-height: none; /* Отмена ограничения по высоте */
+            max-height: none;
         }
 
         .anime-item {
-            margin-bottom: 20px; /* Добавляем отступ снизу между элементами */
-            max-width: 20%; /* Расширяем элементы до 100% ширины контейнера */
+            margin-bottom: 20px;
+            max-width: 20%;
         }
 
             .anime-item img {
-                width: 100%; /* Изображение занимает всю ширину элемента */
-                height: auto; /* Автоматическая высота */
+                width: 100%;
+                height: auto;
             }
     }
 
     .dropdown-content-search {
         position: absolute;
-        top: 100px; /* Располагаем ниже поля ввода */
+        top: 100px;
         left: 0;
-        width: 20%; /* Делаем ширину такой же, как у поля ввода */
+        width: 20%;
         background-color: black;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 999;
         max-height: 300px;
         overflow-y: auto;
-        display: none; /* Скрываем по умолчанию */
+        display: none;
     }
 
         .dropdown-content-search a {
@@ -269,17 +260,17 @@
     @@media (max-width: 480px) {
         .dropdown-content {
             display: none;
-            min-width: 100px; /* Уменьшаем минимальную ширину для мобильных устройств */
-            top: 100px; /* Сдвигаем вниз для мобильных устройств */
+            min-width: 100px;
+            top: 100px;
         }
 
         .anime-title {
-            font-size: 12px; /* Уменьшаем размер шрифта заголовков */
+            font-size: 12px;
         }
 
         .anime-details ul li {
-            font-size: 12px; /* Уменьшаем размер шрифта в списке жанров */
-            padding: 3px 7px; /* Уменьшаем отступы */
+            font-size: 12px;
+            padding: 3px 7px;
         }
     }
     @@media (max-width: 1000px){
@@ -308,26 +299,26 @@
     $(document).ready(function () {
         $('#searchInput').on('input', function () {
             var query = $(this).val();
-            if (query.length > 2) { // Начать поиск, если длина строки больше 2 символов
+            if (query.length > 2) { 
                 $.ajax({
-                    url: '@Url.Action("Search", "Manga")', // URL вашего действия контроллера
+                    url: '@Url.Action("Search", "Manga")',
                     type: 'GET',
                     data: { title: query },
                     success: function (data) {
-                        $('#searchResults').html(data).show(); // Заполните и отобразите результаты
+                        $('#searchResults').html(data).show();
                     },
                     error: function () {
-                        $('#searchResults').hide(); // Скрываем результаты в случае ошибки
+                        $('#searchResults').hide();
                     }
                 });
             } else {
-                $('#searchResults').hide(); // Скрываем результаты, если длина строки меньше 2 символов
+                $('#searchResults').hide();
             }
         });
 
         $(document).click(function (e) {
             if (!$(e.target).closest('#searchForm').length) {
-                $('#searchResults').hide(); // Скрываем результаты при клике вне поля ввода
+                $('#searchResults').hide();
             }
         });
     });

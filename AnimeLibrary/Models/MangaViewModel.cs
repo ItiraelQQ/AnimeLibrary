@@ -22,7 +22,7 @@ namespace AnimeLibrary.Models
         public List<MangaViewModel> TrendingManga { get; set; }
         public List<MangaViewModel> PopularManga { get; set; }
         public List<MangaViewModel> PopularManhwa { get; set; }
-        public List<RelatedMangaViewModel> RelatedManga { get; set; } // Связанные аниме
+        public List<RelatedMangaViewModel> RelatedManga { get; set; }
         public List<MangaViewModel> AllMangas { get; set; }
         public class RelatedMangaViewModel
         {
